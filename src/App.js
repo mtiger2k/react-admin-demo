@@ -8,10 +8,16 @@ import fakeServerFactory from './fakeServer';
 
 import englishMessages from './i18n/en';
 
+import customRoutes from './routes';
+
+import { Layout } from './layout';
+
 import visitors from './visitors';
 import products from './products';
 import orders from './orders';
 import invoices from './invoices';
+import reviews from './reviews';
+import categories from './categories';
 
 const i18nProvider = locale => {
     if (locale === 'fr') {
@@ -53,13 +59,13 @@ class App extends Component {
         }
 
         return (
-          <Admin dataProvider={dataProvider} i18nProvider={i18nProvider} >
+          <Admin dataProvider={dataProvider} i18nProvider={i18nProvider} appLayout={Layout} customRoutes={customRoutes} >
             <Resource name="customers" {...visitors} />
             <Resource name="products" {...products} />
             <Resource name="commands" {...orders} options={{ label: 'Orders' }} />
             <Resource name="invoices" {...invoices} />
-            <Resource name="categories" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
-            <Resource name="reviews" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
+            <Resource name="categories" {...categories} />
+            <Resource name="reviews" {...reviews} />
           </Admin>
         );
     }
