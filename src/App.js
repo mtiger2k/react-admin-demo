@@ -10,6 +10,8 @@ import englishMessages from './i18n/en';
 
 import visitors from './visitors';
 import products from './products';
+import orders from './orders';
+import invoices from './invoices';
 
 const i18nProvider = locale => {
     if (locale === 'fr') {
@@ -53,9 +55,9 @@ class App extends Component {
         return (
           <Admin dataProvider={dataProvider} i18nProvider={i18nProvider} >
             <Resource name="customers" {...visitors} />
-            <Resource name="commands" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} options={{ label: 'Orders' }} />
-            <Resource name="invoices" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
             <Resource name="products" {...products} />
+            <Resource name="commands" {...orders} options={{ label: 'Orders' }} />
+            <Resource name="invoices" {...invoices} />
             <Resource name="categories" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
             <Resource name="reviews" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
           </Admin>
