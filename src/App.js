@@ -1,10 +1,24 @@
 import React, {Component} from 'react';
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
+import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
 import logo from './logo.svg';
 import './App.css';
 
 import dataProviderFactory from './dataProvider';
 import fakeServerFactory from './fakeServer';
+
+import englishMessages from './i18n/en';
+
+import visitors from './visitors';
+import products from './products';
+
+const i18nProvider = locale => {
+    if (locale === 'fr') {
+        return import('./i18n/fr').then(messages => messages.default);
+    }
+
+    // Always fallback on english
+    return englishMessages;
+};
 
 class App extends Component {
     state = { dataProvider: null };
@@ -37,13 +51,13 @@ class App extends Component {
         }
 
         return (
-          <Admin dataProvider={dataProvider} >
-            <Resource name="customers" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="commands" list={ListGuesser} edit={EditGuesser} options={{ label: 'Orders' }} />
-            <Resource name="invoices" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="products" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="categories" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="reviews" list={ListGuesser} edit={EditGuesser} />
+          <Admin dataProvider={dataProvider} i18nProvider={i18nProvider} >
+            <Resource name="customers" {...visitors} />
+            <Resource name="commands" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} options={{ label: 'Orders' }} />
+            <Resource name="invoices" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
+            <Resource name="products" {...products} />
+            <Resource name="categories" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
+            <Resource name="reviews" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />
           </Admin>
         );
     }
